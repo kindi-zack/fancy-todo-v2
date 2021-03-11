@@ -1,7 +1,7 @@
 const {Todo} = require('../models')
 
 class todoController{
-    static getTodos(req, res){
+    static getTodos(req, res, next){
         Todo.findAll({
             order : [['id', 'ASC']]
         })
@@ -9,21 +9,24 @@ class todoController{
             if(todos.length > 0){
                 res.status(200).json(todos)
             }else{
-                res.status(200).json('DATABASE IS EMPTRY')
+                // res.status(200).json('DATABASE IS EMPTRY')
+                throw {name: 'DATABASE IS EMPTY'}
             }
         })
         .catch(err=>{
-            res.status(400).json(err)
+            next(err)
+            // res.status(400).json(err)
         })
     }
 
-    static createTodo(req, res){
+    static createTodo(req, res, next){
         let {title, description, status, due_date} = req.body
         let data = {
             title,
             description,
             status : status || false,
-            due_date
+            due_date,
+            UserId : req.decoded.id
         }
 
         Todo.create(data)
@@ -32,21 +35,29 @@ class todoController{
         })
         .catch(err=>{
             // res.status(400).json(err.errors[0].message)
-            res.status(400).json(err)
+            // res.status(400).json(err)
+            next(err)
         })
     }
 
-    static getTodoById(req, res){
+    static getTodoById(req, res, next){
         Todo.findByPk(req.params.id)
         .then(todo=>{
+            // if(!todo) throw {status: 404, name: 'Data Not Found'}
+            // console.log('<<<<<<<<<<<<<<<<<<<<<')
             res.status(200).json(todo)
         })
         .catch(err=>{
-            res.status(400).json(err)
+            // err.name = 
+            next(err)
+            // RESPON TIDAK JELAS !!
+            // console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+            // res.status(404).json(err)
+            
         })
     }
 
-    static modifyMany(req, res){
+    static modifyMany(req, res, next){
         const {title, description, status, due_date} = req.body
         const id = +req.params.id
 
@@ -71,16 +82,19 @@ class todoController{
         .catch(err=>{
             if(err.status){
                 res.status(err.status).json(err.msg)
+                // next(err)
             }else if(err.name === 'SequelizeValidationError'){
-                res.status(400).json(err)
+                // res.status(400).json(err)
+                next(err)
             }else{
-                res.status(500).json(err)
+                // res.status(500).json(err)
+                next(err)
             }
             // next(err)
         })
     }
 
-    static deleteTodo(req, res){
+    static deleteTodo(req, res, next){
         Todo.destroy({
             where : {
                 id : req.params.id
@@ -100,14 +114,16 @@ class todoController{
         })
         .catch(err=>{
             if(err.status){
-                res.status(err.status).json(err.msg)
+                // res.status(err.status).json(err.msg)
+                next(err)
             }else{
-                res.status(400).json(err)
+                // res.status(400).json(err)
+                next(err)
             }
         })
     }
 
-    static modifyOne(req, res){
+    static modifyOne(req, res, next){
         
         Todo.update({
             status : req.body.status,
@@ -129,11 +145,14 @@ class todoController{
         })
         .catch(err=>{
             if(err.status){
-                res.status(err.status).json(err.msg)
+                // res.status(err.status).json(err.msg)
+                next(err)
             }else if(err.name === 'SequelizeDatabaseError'){
-                res.status(400).json(err)
+                // res.status(400).json(err)
+                next(err)
             }else{
-                res.status(500).json(err)
+                // res.status(500).json(err)
+                next(err)
             }
         })
     }

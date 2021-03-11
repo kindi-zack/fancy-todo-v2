@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Todo.belongsTo(models.User)
     }
   };
   Todo.init({
@@ -39,7 +40,15 @@ module.exports = (sequelize, DataTypes) => {
         isAfter: {
           args: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
           msg: 'Date Must be After Today'
-        }
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Date is Required'
+        },
+        isDate: {
+          args: true,
+          msg: 'YY/MM/DD'
+        },
       }
     }
   }, {

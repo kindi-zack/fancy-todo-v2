@@ -30,10 +30,12 @@ class UserController{
             }
         })
         .then(user=>{
+          
             if(!user) throw {msg: 'wrong password / email'}
             const checkPass = comparePass(password, user.password,)
+         
             if(!checkPass) throw {msg: 'wrong password / email'}
-
+            
             const access_token = generateToken({
                 id: user.id,
                 email: user.email

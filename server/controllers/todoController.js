@@ -1,9 +1,10 @@
-const {Todo} = require('../models')
+const {Todo, User} = require('../models')
 
 class todoController{
     static getTodos(req, res, next){
         Todo.findAll({
-            order : [['id', 'ASC']]
+            order : [['id', 'ASC']],
+            include : [User]
         })
         .then(todos=>{
             if(todos.length > 0){

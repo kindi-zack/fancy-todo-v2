@@ -12,6 +12,11 @@ section {
 #board{
     margin-top: 20px
 }
+.statusBox{
+  width:50%;
+  background: gray;
+  text-align: center;
+}
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors

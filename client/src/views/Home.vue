@@ -4,11 +4,11 @@
         :changeIsLogin="changeIsLogin">
         </Navbar>
 
-        <div style="text-align: center; margin-top:10px" v-if="showCreate">
+        <div style="text-align: center; margin-top:10px" v-if="showCreate && showEdit">
             <h1 @click.prevent="showCreateForm(false)" class='btn btn-primary'>Create Todo</h1>
         </div>
-         <div style="text-align: center; margin-top:10px" v-if="!showCreate">
-            <h1 @click.prevent="showCreateForm(true)" class='btn btn-primary'>Show Todo</h1>
+         <div style="text-align: center; margin-top:10px" v-if="!showCreate || !showEdit">
+            <h1 @click.prevent="showCreateForm(true) || showEditForm(true)" class='btn btn-primary'>Show Todo</h1>
         </div>
 
         <CreateForm
@@ -18,17 +18,27 @@
         v-if="!showCreate">
         </CreateForm>
 
-        <Todos
+        <EditForm
         :getTodos="getTodos"
         :baseUrl="baseUrl"
+        v-if="!showEdit"
+        :editTemp="editTemp">
+        </EditForm>
+
+        <Todos
+        :editTemp="editTemp"
+        :getTodos="getTodos"
+        :showEditForm="showEditForm"
+        :baseUrl="baseUrl"
         :todos="todos"
-        v-if="showCreate">
+        v-if="showCreate && showEdit">
         </Todos>
     </div>
 </template>
 
 <script>
 import Swal from 'sweetalert2'
+import EditForm from '../components/EditForm'
 import CreateForm from '../components/CreateForm'
 import Navbar from '../components/Navbar'
 import axios from 'axios'
@@ -36,18 +46,21 @@ import Todos from '../components/TodosCard'
 export default {
     data(){
         return {
+            editTemp : '',
             todos: '',
             // todoTitle: '',
             // todoDesc: '',
             // todoDate: '',
             // todoStatus: '',
-            showCreate: true
+            showCreate: true,
+            showEdit: true,
         }
     },
     components: {
         Todos,
         Navbar,
-        CreateForm
+        CreateForm,
+        EditForm
     },
     props:['baseUrl', 'changeIsLogin'],
     methods: {
@@ -61,11 +74,50 @@ export default {
             })
             .then(({data})=>{
                 // console.log(data)
+                // let dateFormat = data
+               let dataTemp = data.map(el=>{
+                     let dateFomat = new Date(el.due_date)
+                     el.due_date = `${dateFomat.getFullYear()}/${dateFomat.getMonth()+1}/${dateFomat.getDate()}`
+                     return el
+                })
+                // console.log(dataTemp)
                 this.todos = data
             })
             .catch(err=>{
                 console.log(err.response.data)
             })
+        },
+
+        showEditForm(val, id){
+            this.showEdit = val
+
+            if(id){
+                axios({
+                url:`${this.baseUrl}todos/${id}`,
+                method: 'get',
+                headers: {
+                    token: localStorage.access_token
+                }
+            })
+            .then(({data})=>{
+                let dateFormat = new Date(data.due_date)
+             
+                let bulan = `${dateFormat.getMonth()+1}`
+                    console.log(bulan.length , '<<<<<<<<<<<<<<<<<<<<<<<<')
+                    if(bulan.length === 1) bulan = `0${bulan}`
+                let tgl = `${dateFormat.getDate()}`
+                    if(tgl.length === 1) tgl = `0${tgl}`
+            
+                let newDate = `${dateFormat.getFullYear()}-${bulan}-${tgl}`
+                data.due_date = newDate
+                this.editTemp = data
+ 
+
+            })
+            .catch(err=>{
+                console.log(err.response.data)
+            })
+            }
         },
 
         showCreateForm(val){

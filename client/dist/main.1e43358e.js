@@ -14328,7 +14328,316 @@ function patchScopedSlots (instance) {
   }
 }
 
-},{}],"src/components/CreateForm.vue":[function(require,module,exports) {
+},{}],"src/components/EditForm.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _sweetalert = _interopRequireDefault(require("sweetalert2"));
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  props: ['editTemp', 'baseUrl', 'getTodos'],
+  data: function data() {
+    return {// editId : this.editTemp.id,
+      // editTitle : this.editTemp.title,
+      // editDesc : this.editTemp.description,
+      // editStatus: this.editTemp.status,
+      // editDate: this.editTemp.due_date
+    };
+  },
+  methods: {
+    update: function update(id) {
+      var _this = this;
+
+      (0, _axios.default)({
+        url: "".concat(this.baseUrl, "todos/").concat(id),
+        method: 'PATCH',
+        headers: {
+          token: localStorage.access_token
+        },
+        data: {
+          title: this.editTemp.title,
+          description: this.editTemp.description,
+          status: this.editTemp.status,
+          due_date: this.editTemp.due_date
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        console.log(data);
+
+        _sweetalert.default.fire('Updated Success', '', 'success');
+
+        _this.getTodos();
+
+        _this.editTemp.title = '';
+        _this.editTemp.description = '';
+        _this.editTemp.status = '';
+        _this.editTemp.due_date = '';
+      }).catch(function (err) {
+        console.log(err.response.data);
+        var errors = err.response.data;
+
+        if (Array.isArray(errors)) {
+          _sweetalert.default.fire(errors[0], '', 'error');
+        } else {
+          _sweetalert.default.fire(errors.msg, '', 'error');
+        }
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $8bc5ff = exports.default || module.exports;
+      
+      if (typeof $8bc5ff === 'function') {
+        $8bc5ff = $8bc5ff.options;
+      }
+    
+        /* template */
+        Object.assign($8bc5ff, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card" }, [
+    _c(
+      "form",
+      {
+        attrs: { action: "#" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.update(_vm.editTemp.id)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "form-group mb-3" }, [
+          _c("label", { staticClass: "label", attrs: { for: "title" } }, [
+            _vm._v("Title")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.editTemp.title,
+                expression: "editTemp.title"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", placeholder: "todo title" },
+            domProps: { value: _vm.editTemp.title },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.editTemp, "title", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group mb-3" }, [
+          _c("label", { staticClass: "label", attrs: { for: "description" } }, [
+            _vm._v("Description")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.editTemp.description,
+                expression: "editTemp.description"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "text",
+              placeholder: "todo description",
+              required: ""
+            },
+            domProps: { value: _vm.editTemp.description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.editTemp, "description", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group mb-3" }, [
+          _c("label", { staticClass: "label", attrs: { for: "status" } }, [
+            _vm._v("Status")
+          ]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.editTemp.status,
+                  expression: "editTemp.status"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { id: "exampleFormControlSelect1" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.editTemp,
+                    "status",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
+            },
+            [
+              _c("option", [_vm._v("false")]),
+              _vm._v(" "),
+              _c("option", [_vm._v("true")])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group mb-3" }, [
+          _c("label", { staticClass: "label", attrs: { for: "due_date" } }, [
+            _vm._v("Date")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.editTemp.due_date,
+                expression: "editTemp.due_date"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "date", placeholder: "todo date", required: "" },
+            domProps: { value: _vm.editTemp.due_date },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.editTemp, "due_date", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _vm._m(0)
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        {
+          staticClass: "form-control btn btn-primary submit px-3",
+          attrs: { type: "submit" }
+        },
+        [_vm._v("Update")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$8bc5ff', $8bc5ff);
+          } else {
+            api.reload('$8bc5ff', $8bc5ff);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"sweetalert2":"node_modules/sweetalert2/dist/sweetalert2.all.js","axios":"node_modules/axios/index.js","_css_loader":"../../../../../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CreateForm.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14799,14 +15108,48 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
-  props: ['baseUrl', 'todos', 'getTodos'],
+  props: ['baseUrl', 'todos', 'getTodos', 'showEditForm', 'editTemp'],
   data: function data() {
     return {};
   },
   methods: {
-    deleteTodo: function deleteTodo(id) {
+    changeStatus: function changeStatus(id, state) {
       var _this = this;
+
+      (0, _axios.default)({
+        url: "".concat(this.baseUrl, "todos/").concat(id),
+        method: 'put',
+        headers: {
+          token: localStorage.access_token
+        },
+        data: {
+          status: state
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        console.log(data);
+
+        _this.getTodos();
+      }).catch(function (err) {
+        // console.log(err.response.data)
+        _sweetalert.default.fire(err.response.data.msg, '', 'error');
+      });
+    },
+    deleteTodo: function deleteTodo(id) {
+      var _this2 = this;
 
       _sweetalert.default.fire({
         title: 'Are you sure?',
@@ -14819,17 +15162,17 @@ var _default = {
       }).then(function (result) {
         if (result.isConfirmed) {
           (0, _axios.default)({
-            url: "".concat(_this.baseUrl, "todos/").concat(id),
+            url: "".concat(_this2.baseUrl, "todos/").concat(id),
             method: 'DELETE',
             headers: {
               token: localStorage.access_token
             }
-          }).then(function (_ref) {
-            var data = _ref.data;
+          }).then(function (_ref2) {
+            var data = _ref2.data;
 
             _sweetalert.default.fire('Good job!', data.msg, 'success');
 
-            _this.getTodos();
+            _this2.getTodos();
           }).catch(function (err) {
             console.log(err.response);
 
@@ -14876,9 +15219,73 @@ exports.default = _default;
                 _vm._v(_vm._s(todo.description))
               ]),
               _vm._v(" "),
-              _c("p", { staticClass: "card-text" }, [
-                _vm._v(_vm._s(todo.status))
-              ]),
+              todo.status
+                ? _c("div", { staticClass: "statusBox card-text" }, [
+                    _c("p", [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "btn btn-success",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.changeStatus(todo.id, "true")
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(todo.status))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          staticClass: "btn",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.changeStatus(todo.id, "false")
+                            }
+                          }
+                        },
+                        [_vm._v("false")]
+                      )
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              !todo.status
+                ? _c("div", { staticClass: "statusBox card-text" }, [
+                    _c("p", [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "btn",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.changeStatus(todo.id, "true")
+                            }
+                          }
+                        },
+                        [_vm._v("true")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          staticClass: "btn btn-success",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.changeStatus(todo.id, "false")
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(todo.status))]
+                      )
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c("p", { staticClass: "card-text" }, [
                 _vm._v(_vm._s(todo.due_date))
@@ -14886,7 +15293,16 @@ exports.default = _default;
               _vm._v(" "),
               _c(
                 "a",
-                { staticClass: "btn btn-primary", attrs: { href: "#" } },
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.showEditForm(false, todo.id)
+                    }
+                  }
+                },
                 [_vm._v("Edit")]
               ),
               _vm._v(" "),
@@ -14968,6 +15384,8 @@ exports.default = void 0;
 
 var _sweetalert = _interopRequireDefault(require("sweetalert2"));
 
+var _EditForm = _interopRequireDefault(require("../components/EditForm"));
+
 var _CreateForm = _interopRequireDefault(require("../components/CreateForm"));
 
 var _Navbar = _interopRequireDefault(require("../components/Navbar"));
@@ -15007,21 +15425,33 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
   data: function data() {
     return {
+      editTemp: '',
       todos: '',
       // todoTitle: '',
       // todoDesc: '',
       // todoDate: '',
       // todoStatus: '',
-      showCreate: true
+      showCreate: true,
+      showEdit: true
     };
   },
   components: {
     Todos: _TodosCard.default,
     Navbar: _Navbar.default,
-    CreateForm: _CreateForm.default
+    CreateForm: _CreateForm.default,
+    EditForm: _EditForm.default
   },
   props: ['baseUrl', 'changeIsLogin'],
   methods: {
@@ -15037,10 +15467,45 @@ var _default = {
       }).then(function (_ref) {
         var data = _ref.data;
         // console.log(data)
+        // let dateFormat = data
+        var dataTemp = data.map(function (el) {
+          var dateFomat = new Date(el.due_date);
+          el.due_date = "".concat(dateFomat.getFullYear(), "/").concat(dateFomat.getMonth() + 1, "/").concat(dateFomat.getDate());
+          return el;
+        }); // console.log(dataTemp)
+
         _this.todos = data;
       }).catch(function (err) {
         console.log(err.response.data);
       });
+    },
+    showEditForm: function showEditForm(val, id) {
+      var _this2 = this;
+
+      this.showEdit = val;
+
+      if (id) {
+        (0, _axios.default)({
+          url: "".concat(this.baseUrl, "todos/").concat(id),
+          method: 'get',
+          headers: {
+            token: localStorage.access_token
+          }
+        }).then(function (_ref2) {
+          var data = _ref2.data;
+          var dateFormat = new Date(data.due_date);
+          var bulan = "".concat(dateFormat.getMonth() + 1);
+          console.log(bulan.length, '<<<<<<<<<<<<<<<<<<<<<<<<');
+          if (bulan.length === 1) bulan = "0".concat(bulan);
+          var tgl = "".concat(dateFormat.getDate());
+          if (tgl.length === 1) tgl = "0".concat(tgl);
+          var newDate = "".concat(dateFormat.getFullYear(), "-").concat(bulan, "-").concat(tgl);
+          data.due_date = newDate;
+          _this2.editTemp = data;
+        }).catch(function (err) {
+          console.log(err.response.data);
+        });
+      }
     },
     showCreateForm: function showCreateForm(val) {
       /*
@@ -15084,7 +15549,7 @@ exports.default = _default;
     [
       _c("Navbar", { attrs: { changeIsLogin: _vm.changeIsLogin } }),
       _vm._v(" "),
-      _vm.showCreate
+      _vm.showCreate && _vm.showEdit
         ? _c(
             "div",
             { staticStyle: { "text-align": "center", "margin-top": "10px" } },
@@ -15106,7 +15571,7 @@ exports.default = _default;
           )
         : _vm._e(),
       _vm._v(" "),
-      !_vm.showCreate
+      !_vm.showCreate || !_vm.showEdit
         ? _c(
             "div",
             { staticStyle: { "text-align": "center", "margin-top": "10px" } },
@@ -15118,7 +15583,7 @@ exports.default = _default;
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.showCreateForm(true)
+                      _vm.showCreateForm(true) || _vm.showEditForm(true)
                     }
                   }
                 },
@@ -15138,10 +15603,22 @@ exports.default = _default;
           })
         : _vm._e(),
       _vm._v(" "),
-      _vm.showCreate
-        ? _c("Todos", {
+      !_vm.showEdit
+        ? _c("EditForm", {
             attrs: {
               getTodos: _vm.getTodos,
+              baseUrl: _vm.baseUrl,
+              editTemp: _vm.editTemp
+            }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.showCreate && _vm.showEdit
+        ? _c("Todos", {
+            attrs: {
+              editTemp: _vm.editTemp,
+              getTodos: _vm.getTodos,
+              showEditForm: _vm.showEditForm,
               baseUrl: _vm.baseUrl,
               todos: _vm.todos
             }
@@ -15184,7 +15661,7 @@ render._withStripped = true
       
       }
     })();
-},{"sweetalert2":"node_modules/sweetalert2/dist/sweetalert2.all.js","../components/CreateForm":"src/components/CreateForm.vue","../components/Navbar":"src/components/Navbar.vue","axios":"node_modules/axios/index.js","../components/TodosCard":"src/components/TodosCard.vue","_css_loader":"../../../../../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/Login.vue":[function(require,module,exports) {
+},{"sweetalert2":"node_modules/sweetalert2/dist/sweetalert2.all.js","../components/EditForm":"src/components/EditForm.vue","../components/CreateForm":"src/components/CreateForm.vue","../components/Navbar":"src/components/Navbar.vue","axios":"node_modules/axios/index.js","../components/TodosCard":"src/components/TodosCard.vue","_css_loader":"../../../../../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/Login.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15193,6 +15670,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
+
+var _sweetalert = _interopRequireDefault(require("sweetalert2"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -15286,7 +15765,7 @@ var _default = {
 
         _this.changeIsLogin(true);
       }).catch(function (err) {
-        alert(err.response.data.msg);
+        _sweetalert.default.fire(err.response.data.msg, 'Try Again', 'error');
       });
     }
   }
@@ -15423,9 +15902,7 @@ exports.default = _default;
                     })
                   ]),
                   _vm._v(" "),
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _vm._m(2)
+                  _vm._m(1)
                 ]
               )
             ])
@@ -15484,25 +15961,6 @@ var staticRenderFns = [
         [_vm._v("Sign In")]
       )
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group d-md-flex" }, [
-      _c("div", { staticClass: "w-50 text-left" }, [
-        _c("label", { staticClass: "checkbox-wrap checkbox-primary mb-0" }, [
-          _vm._v("Remember Me\n\t\t\t\t\t\t\t\t\t\t\t  "),
-          _c("input", { attrs: { type: "checkbox", checked: "" } }),
-          _vm._v(" "),
-          _c("span", { staticClass: "checkmark" })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "w-50 text-md-right" }, [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Forgot Password")])
-      ])
-    ])
   }
 ]
 render._withStripped = true
@@ -15537,7 +15995,7 @@ render._withStripped = true
       
       }
     })();
-},{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/Register.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","sweetalert2":"node_modules/sweetalert2/dist/sweetalert2.all.js","_css_loader":"../../../../../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/Register.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16029,7 +16487,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "32865" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40947" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

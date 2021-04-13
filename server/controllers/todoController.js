@@ -4,7 +4,10 @@ class todoController{
     static getTodos(req, res, next){
         Todo.findAll({
             order : [['id', 'ASC']],
-            include : [User]
+            include : [User],
+            where: {
+                // due_date: '2021-04-22'
+            }
         })
         .then(todos=>{
             if(todos.length > 0){

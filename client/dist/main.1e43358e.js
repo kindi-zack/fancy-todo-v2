@@ -16005,6 +16005,8 @@ exports.default = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
+var _sweetalert = _interopRequireDefault(require("sweetalert2"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //
@@ -16063,6 +16065,8 @@ var _default = {
   },
   methods: {
     register: function register() {
+      var _this = this;
+
       (0, _axios.default)({
         method: 'POST',
         url: "".concat(this.baseUrl, "register"),
@@ -16072,9 +16076,17 @@ var _default = {
         }
       }).then(function (_ref) {
         var data = _ref.data;
-        console.log(data);
+
+        // console.log(data)
+        _sweetalert.default.fire('Register is Success', '', 'success');
+      }).then(function (_) {
+        _this.regEmail = '';
+        _this.regPswd = '';
+
+        _this.changeDisplayRegister();
       }).catch(function (err) {
-        console.log(err.response.data);
+        console.log(err.response);
+        if (err.response.data[0] === 'email must be unique') _sweetalert.default.fire('Email is Already Taken', 'Try Again', 'error'); // console.log(err.response.data)
       });
     }
   }
@@ -16280,7 +16292,7 @@ render._withStripped = true
       
       }
     })();
-},{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","sweetalert2":"node_modules/sweetalert2/dist/sweetalert2.all.js","_css_loader":"../../../../../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16296,6 +16308,7 @@ var _Register = _interopRequireDefault(require("../src/views/Register"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
 //
 //
 //
@@ -16374,26 +16387,33 @@ exports.default = _default;
     "div",
     { staticClass: "bg-secondary", attrs: { id: "main" } },
     [
-      !_vm.isLogin
-        ? _c("Login", {
-            class: _vm.displayLogin,
-            attrs: {
-              baseUrl: _vm.baseUrl,
-              changeIsLogin: _vm.changeIsLogin,
-              changeDisplayLogin: _vm.changeDisplayLogin
-            }
-          })
-        : _vm._e(),
-      _vm._v(" "),
-      !_vm.isLogin
-        ? _c("Register", {
-            class: _vm.displayRegsiter,
-            attrs: {
-              changeDisplayRegister: _vm.changeDisplayRegister,
-              baseUrl: _vm.baseUrl
-            }
-          })
-        : _vm._e(),
+      _c(
+        "div",
+        { staticClass: "loginReg" },
+        [
+          !_vm.isLogin
+            ? _c("Login", {
+                class: _vm.displayLogin,
+                attrs: {
+                  baseUrl: _vm.baseUrl,
+                  changeIsLogin: _vm.changeIsLogin,
+                  changeDisplayLogin: _vm.changeDisplayLogin
+                }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          !_vm.isLogin
+            ? _c("Register", {
+                class: _vm.displayRegsiter,
+                attrs: {
+                  changeDisplayRegister: _vm.changeDisplayRegister,
+                  baseUrl: _vm.baseUrl
+                }
+              })
+            : _vm._e()
+        ],
+        1
+      ),
       _vm._v(" "),
       _vm.isLogin
         ? _c("Home", {
@@ -16487,7 +16507,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40947" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43615" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -104,7 +104,7 @@ export default {
     
 <style>
 	.container {
-		border: 1px solid;
+		/* border: 1px solid; */
 		height: 100vh;
 	}
 </style>

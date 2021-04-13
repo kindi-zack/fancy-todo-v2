@@ -46,6 +46,7 @@
 
 <script>
 import axios from 'axios'
+import swal from 'sweetalert2'
 
 export default {
 	props: ['changeDisplayRegister', 'baseUrl'],
@@ -66,10 +67,27 @@ export default {
 				}
 			})
 			.then(({data})=>{
-				console.log(data)
+				// console.log(data)
+				swal.fire(
+					'Register is Success',
+					'',
+					'success'
+				)
+			})
+			.then(_=>{
+				this.regEmail = ''
+				this.regPswd = ''
+				this.changeDisplayRegister()
 			})
 			.catch(err=>{
-				console.log(err.response.data)
+				console.log(err.response)
+				if(err.response.data[0] === 'email must be unique')
+				swal.fire(
+					'Email is Already Taken',
+					'Try Again',
+					'error'
+				)
+				// console.log(err.response.data)
 			})
 		}
 	},

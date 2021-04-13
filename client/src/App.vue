@@ -1,21 +1,22 @@
 <template >
   <div id='main' class="bg-secondary">
-      <Login 
-      :baseUrl="baseUrl"
-      v-if="!isLogin"
-      :changeIsLogin="changeIsLogin"
-      :changeDisplayLogin="changeDisplayLogin"
-      :class="displayLogin"
-      >
-      </Login>
+      <div class='loginReg' >
+            <Login 
+            :baseUrl="baseUrl"
+            v-if="!isLogin"
+            :changeIsLogin="changeIsLogin"
+            :changeDisplayLogin="changeDisplayLogin"
+            :class="displayLogin">
+            </Login>
 
-      <Register 
-      :class="displayRegsiter"
-      :changeDisplayRegister="changeDisplayRegister"
-      :baseUrl="baseUrl"
-      v-if="!isLogin">
-      </Register>
-
+            <Register 
+            :class="displayRegsiter"
+            :changeDisplayRegister="changeDisplayRegister"
+            :baseUrl="baseUrl"
+            v-if="!isLogin">
+            </Register>
+      </div>
+      
       <Home
       v-if="isLogin"
       :baseUrl="baseUrl"
@@ -70,5 +71,10 @@ export default {
 <style>
     #main{
         min-height: 100vh
+    }
+    .loginReg{
+        /* display: flex;
+        justify-content: center;
+        align-items: center; */
     }
 </style>

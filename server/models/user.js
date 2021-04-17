@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
           args: true,
           msg: 'Email is Required'
         },
+        isEmail: {
+          args: true,
+          msg: 'Must use email format'
+        }
       },
       unique: true
     },

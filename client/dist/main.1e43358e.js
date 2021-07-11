@@ -14013,7 +14013,7 @@ function getBundleURL() {
 }
 
 function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
 }
 
 exports.getBundleURL = getBundleURLCached;
@@ -16086,7 +16086,16 @@ var _default = {
         _this.changeDisplayRegister();
       }).catch(function (err) {
         console.log(err.response);
-        if (err.response.data[0] === 'email must be unique') _sweetalert.default.fire('Email is Already Taken', 'Try Again', 'error'); // console.log(err.response.data)
+
+        if (err.response.data[0] === 'email must be unique') {
+          _sweetalert.default.fire('Email is Already Taken', 'Try Again', 'error');
+        } else {
+          _sweetalert.default.fire(err.response.data[0], 'Try Again', 'error'); // console.log(err.response.data)
+
+        } // console.log(err.response.data)
+
+      }).then(function (_) {
+        _this.regEmail = '', _this.regPswd = '';
       });
     }
   }
@@ -16341,7 +16350,7 @@ var _default = {
     return {
       isLogin: false,
       message: 'Hello World',
-      baseUrl: 'http://localhost:7000/',
+      baseUrl: ' https://kin-fancy-todo.herokuapp.com/',
       displayLogin: '',
       displayRegsiter: 'd-none'
     };
@@ -16507,7 +16516,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43615" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35461" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

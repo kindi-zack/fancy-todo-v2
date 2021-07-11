@@ -35,7 +35,7 @@ export default {
         return {
             isLogin: false,
             message: 'Hello World',
-            baseUrl: 'http://localhost:7000/',
+            baseUrl: ' https://kin-fancy-todo.herokuapp.com/',
             displayLogin: '',
             displayRegsiter: 'd-none'
         }

@@ -81,13 +81,25 @@ export default {
 			})
 			.catch(err=>{
 				console.log(err.response)
-				if(err.response.data[0] === 'email must be unique')
-				swal.fire(
+				if(err.response.data[0] === 'email must be unique'){
+					swal.fire(
 					'Email is Already Taken',
 					'Try Again',
 					'error'
-				)
+					)
+				}else{
+					swal.fire(
+					err.response.data[0],
+					'Try Again',
+					'error'
+					)
+					// console.log(err.response.data)
+				}
 				// console.log(err.response.data)
+			})
+			.then(_=>{
+				this.regEmail = '',
+				this.regPswd = ''
 			})
 		}
 	},
